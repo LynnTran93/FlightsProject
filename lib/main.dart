@@ -93,8 +93,10 @@ class _FlightListPageState extends State<FlightListPage> {
                 final flight = flights[index];
 
                 return ListTile(
-                  title: Text('${flight.departureCity} to ${flight.destinationCity}'),
-                  subtitle: Text('${flight.departureTime} - ${flight.arrivalTime}'),
+                  title: Text(
+                      '${flight.departureCity} to ${flight.destinationCity}'),
+                  subtitle: Text(
+                      '${flight.departureTime} - ${flight.arrivalTime}'),
                   onTap: () async {
                     final updatedFlight = Flight(
                       id: flight.id,
