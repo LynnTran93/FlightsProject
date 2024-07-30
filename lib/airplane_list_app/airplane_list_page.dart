@@ -1,6 +1,6 @@
 // airplane_list_page.dart
 import 'package:flutter/material.dart';
-import '/models/airplane.dart';
+import 'airplane.dart';
 
 class AirplaneListPage extends StatefulWidget {
   const AirplaneListPage({super.key});
