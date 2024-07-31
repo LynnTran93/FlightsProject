@@ -1,9 +1,9 @@
+import 'package:final_project_flights_list/database/database.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart' as sqflite;
-import 'dao/flight_dao.dart';
-import 'database/database.dart';
-import 'entity/flight.dart';
+import 'package:final_project_flights_list/pages/flights_list.dart';
+import 'package:final_project_flights_list/pages/customer_list_page.dart';
+import 'package:final_project_flights_list/pages/airplane_list_page.dart';
+import 'package:final_project_flights_list/pages/reservation_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,107 +19,69 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flight List Page',
+      title: 'Final Project',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FlightListPage(database: database),
+      home: MainPage(database: database),
     );
   }
 }
 
-class FlightListPage extends StatefulWidget {
+class MainPage extends StatelessWidget {
   final AppDatabase database;
 
-  FlightListPage({required this.database});
-
-  @override
-  _FlightListPageState createState() => _FlightListPageState();
-}
-
-class _FlightListPageState extends State<FlightListPage> {
-  late Future<List<Flight>> flights;
-
-  @override
-  void initState() {
-    super.initState();
-    refreshFlights();
-  }
-
-  Future refreshFlights() async {
-    setState(() {
-      flights = widget.database.flightDao.findAllFlights();
-    });
-  }
+  MainPage({required this.database});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flights'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () async {
-              final newFlight = Flight(
-                departureCity: 'New York',
-                destinationCity: 'Los Angeles',
-                departureTime: '08:00 AM',
-                arrivalTime: '11:00 AM',
-              );
-              await widget.database.flightDao.insertFlight(newFlight);
-              refreshFlights();
-            },
-          ),
-        ],
+        title: Text('Final Project Home'),
       ),
-      body: FutureBuilder<List<Flight>>(
-        future: flights,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('An error occurred!'));
-          } else {
-            final flights = snapshot.data;
-
-            if (flights == null || flights.isEmpty) {
-              return Center(child: Text('No flights available.'));
-            }
-
-            return ListView.builder(
-              itemCount: flights.length,
-              itemBuilder: (context, index) {
-                final flight = flights[index];
-
-                return ListTile(
-                  title: Text(
-                      '${flight.departureCity} to ${flight.destinationCity}'),
-                  subtitle: Text(
-                      '${flight.departureTime} - ${flight.arrivalTime}'),
-                  onTap: () async {
-                    final updatedFlight = Flight(
-                      id: flight.id,
-                      departureCity: flight.departureCity,
-                      destinationCity: flight.destinationCity,
-                      departureTime: flight.departureTime,
-                      arrivalTime: flight.arrivalTime,
-                    );
-                    await widget.database.flightDao.updateFlight(updatedFlight);
-                    refreshFlights();
-                  },
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () async {
-                      await widget.database.flightDao.deleteFlight(flight);
-                      refreshFlights();
-                    },
-                  ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CustomerListPage(database: database)),
                 );
               },
-            );
-          }
-        },
+              child: Text('Customer List'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AirplaneListPage(database: database)),
+                );
+              },
+              child: Text('Airplane List'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FlightListPage(database: database)),
+                );
+              },
+              child: Text('Flights List'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ReservationPage(database: database)),
+                );
+              },
+              child: Text('Reservation Page'),
+            ),
+          ],
+        ),
       ),
     );
   }
