@@ -1,9 +1,7 @@
 import 'package:final_project_flights_list/database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:final_project_flights_list/pages/flights_list.dart';
-import 'package:final_project_flights_list/pages/customer_list_page.dart';
-import 'package:final_project_flights_list/pages/airplane_list_page.dart';
-import 'package:final_project_flights_list/pages/reservation_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
