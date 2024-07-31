@@ -33,7 +33,6 @@ class ReservationPage extends StatefulWidget {
 
 class _MyHomePageState extends State<ReservationPage> {
 
-  List<String> book = [];
 
   @override
   Widget build(BuildContext context) {

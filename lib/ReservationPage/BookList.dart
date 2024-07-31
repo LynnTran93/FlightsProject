@@ -23,11 +23,11 @@ class BookList extends StatelessWidget {
                         ReservationDetail();
                       },
                       child: SizedBox(
-                        height: 100,
+                        height: 50,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text('Reservation: $index'),
+                            Text('Reservation $index'),
                           ],
                         ),
                       ),
